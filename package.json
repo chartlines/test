@@ -11,5 +11,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-vue": "^7.1.0"
-  }
+  },
+  "repository": "git@github.com:chartlines/test.git",
+  "author": "呂冠慶 <charlie@lvguanqingdeMacBook-Pro.local>"
 }
