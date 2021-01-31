@@ -17,7 +17,7 @@
 
 
             <ul style="list-style-type:none;padding-left:0">
-                <li v-for='(item,index) in filterList' :key='item.id' @dblclick='editList(item)' @dblclick='run'>
+                <li v-for='(item,index) in filterList' :key='item.id' @dblclick='editList(item)'>
                     <template v-if='item.showList'>
                         <input type='checkbox' v-model='item.complete'>
                         <span :class='{dele:item.complete}'>{{item.content}}</span>
@@ -27,7 +27,7 @@
                 </li>
             </ul>
             <span>還有{{checkedItems.length}}筆任務未移除</span>
-            <button @click="run">Button</button>
+            <button @click="run">Button</button>     <!-- 測試用的button -->
         </div>
     </div>
 
@@ -67,6 +67,7 @@ new Vue({
       })
       item.showList = false;
       item.lastContent = item.content;
+    //   this.$refs.project[0].focus();   這里不知道為什麼都不會生效
     },
     finishEdit: function (item) {
       item.showList = true;
@@ -76,7 +77,7 @@ new Vue({
       item.content = item.lastContent;
       item.lastContent = '';
     },
-    run(){
+    run(){                      //這個只是測試用的方法
       this.$refs.project[0].focus();
     },
   },
