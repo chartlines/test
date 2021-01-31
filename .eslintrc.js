@@ -17,6 +17,6 @@ module.exports = {
   rules: {
     semi: ['error', 'always'],
     'comma-dangle': ['error', 'always-multiline'],
-    'import/extensions': ['error'],
+    'import/extensions': ['error', 'always'],
   },
 };

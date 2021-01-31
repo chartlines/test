@@ -1,0 +1,9 @@
+.dele {
+    text-decoration:line-through
+}
+.linkStyle {
+    background-color:grey;display:inline-block;width:80px;text-align:center
+}
+.clicked {
+    background-color:yellow;display:inline-block;width:80px;text-align:center
+}

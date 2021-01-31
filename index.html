@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue 測試範例</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+    <div id="example">
+        <div>
+            <input placeholder="準備要做的任務" v-model="message" @keyup.enter='addList'><button @click="addList">新增</button><br/><br/>
+            <a href='#' class='linkStyle' :class="{clicked:visibility === 'isAll'}" @click.prevent="function(){visibility='isAll'}">全部</a>&nbsp
+            <a href='#' class='linkStyle' :class="{clicked:visibility === 'isProcess'}" @click.prevent="function(){visibility='isProcess'}">進行中</a>&nbsp
+            <a href='#' class='linkStyle' :class="{clicked:visibility === 'isComplete'}" @click.prevent="function(){visibility='isComplete'}">已完成</a>
+            <br/>
+
+
+            <ul style="list-style-type:none;padding-left:0">
+                <li v-for='(item,index) in filterList' :key='item.id' @dblclick='editList(item)' @dblclick='run'>
+                    <template v-if='item.showList'>
+                        <input type='checkbox' v-model='item.complete'>
+                        <span :class='{dele:item.complete}'>{{item.content}}</span>
+                        <button @click='removeList(item.id)'>移除</button>
+                    </template>
+                    <input type='text' v-model='item.content' v-if='!item.showList' @keyup.enter ='finishEdit(item)' @blur ='finishEdit(item)' @keyup.esc ='cancelEdit(item)' ref='project'>
+                </li>
+            </ul>
+            <span>還有{{checkedItems.length}}筆任務未移除</span>
+            <button @click="run">Button</button>
+        </div>
+    </div>
+
+
+
+<script>
+new Vue({
+  el: '#example',
+
+  data: {
+    checkedItems: [],
+    message: '',
+    visibility: 'isAll',
+  },
+
+  methods: {
+    addList: function () {
+      const timeStamp = Math.floor(Date.now());
+      const msg = this.message.trim();
+      if (!msg) { this.message = ''; return; }
+      const newItem = {
+        id: timeStamp,
+        complete: false,
+        content: this.message,
+        showList: true,
+      };
+      this.checkedItems.push(newItem);
+      this.message = '';
+    },
+    removeList: function (itemid) {
+      this.checkedItems = this.checkedItems.filter(function (item) { return !(item.id === itemid); });
+    },
+    editList: function (item) {
+      this.checkedItems = this.checkedItems.map(function(eachValue){    //使保持最多只有一個正在被編輯
+        if(eachValue.showList === false){eachValue.showList = true}
+        return eachValue;
+      })
+      item.showList = false;
+      item.lastContent = item.content;
+    },
+    finishEdit: function (item) {
+      item.showList = true;
+    },
+    cancelEdit: function (item) {
+      item.showList = true;
+      item.content = item.lastContent;
+      item.lastContent = '';
+    },
+    run(){
+      this.$refs.project[0].focus();
+    },
+  },
+
+  computed: {
+    filterList: function () {
+      if (this.visibility === 'isAll') {
+        return this.checkedItems;
+      } else if (this.visibility === 'isProcess') {
+        return this.checkedItems.filter(function (value) { return !value.complete; });
+      } else if (this.visibility === 'isComplete') {
+        return this.checkedItems.filter(function (value) { return value.complete; });
+      }
+    },
+  },
+});
+
+</script>
+</body>
+</html>
